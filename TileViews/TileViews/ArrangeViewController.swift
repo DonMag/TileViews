@@ -8,67 +8,6 @@
 
 import UIKit
 
-// simple custom view
-class MyView: UIView {
-	
-	// this will hold the "content" of the custom view
-	// for this example, it just holds a label
-	let theContentView: UIView = {
-		let v = UIView()
-		v.translatesAutoresizingMaskIntoConstraints = false
-		v.backgroundColor = .cyan
-		return v
-	}()
-	
-	let theLabel: UILabel = {
-		let v = UILabel()
-		v.translatesAutoresizingMaskIntoConstraints = false
-		v.backgroundColor = .clear
-		v.textAlignment = .center
-		v.font = UIFont.systemFont(ofSize: 14.0)
-		return v
-	}()
-	
-	override init(frame: CGRect) {
-		super.init(frame: frame)
-		commonInit()
-	}
-	
-	required init?(coder: NSCoder) {
-		super.init(coder: coder)
-		commonInit()
-	}
-	
-	func commonInit() -> Void {
-		self.backgroundColor = .clear
-		
-		// add the label to the content view
-		theContentView.addSubview(theLabel)
-		
-		// add the content view to self
-		addSubview(theContentView)
-		
-		NSLayoutConstraint.activate([
-			
-			// constrain the label to all 4 sides of the content view
-			theLabel.topAnchor.constraint(equalTo: theContentView.topAnchor, constant: 0.0),
-			theLabel.bottomAnchor.constraint(equalTo: theContentView.bottomAnchor, constant: 0.0),
-			theLabel.leadingAnchor.constraint(equalTo: theContentView.leadingAnchor, constant: 0.0),
-			theLabel.trailingAnchor.constraint(equalTo: theContentView.trailingAnchor, constant: 0.0),
-
-			// constrain the content view to all 4 sides of self with 5-pts "padding"
-			// so when two views are side-by-side, or over-under,
-			// the "content views" will have 10-pts spacing
-			theContentView.topAnchor.constraint(equalTo: topAnchor, constant: 5.0),
-			theContentView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5.0),
-			theContentView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 5.0),
-			theContentView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -5.0),
-
-		])
-	}
-	
-}
-
 class ArrangeViewController: UIViewController {
 
 	// Add a view button
@@ -198,7 +137,7 @@ class ArrangeViewController: UIViewController {
 		
 		// add actions for the Add and Delete buttons
 		addButton.addTarget(self, action: #selector(addTapped(_:)), for: .touchUpInside)
-		remButton.addTarget(self, action: #selector(delTapped(_:)), for: .touchUpInside)
+		remButton.addTarget(self, action: #selector(remTapped(_:)), for: .touchUpInside)
 		
     }
 	
@@ -225,7 +164,7 @@ class ArrangeViewController: UIViewController {
 		
 	}
 
-	@objc func delTapped(_ sender: Any?) -> Void {
+	@objc func remTapped(_ sender: Any?) -> Void {
 
 		// if inner container has at least one custom view
 		if let v = innerContainerView.subviews.last {
@@ -404,13 +343,77 @@ class ArrangeViewController: UIViewController {
 			
 		}
 		
-		// update inner container view's width and height constraints
+		// update inner container view's width and height constraints to match
+        //    single item width * number of columns
+        //    single item height * number of rows
 		innerWidthConstraint.constant = innerW
 		innerHeightConstraint.constant = innerH
 
 	}
 	
 }
+
+// simple custom view with a label in a "content container"
+class MyView: UIView {
+    
+    // this will hold the "content" of the custom view
+    // for this example, it just holds a label
+    let theContentView: UIView = {
+        let v = UIView()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.backgroundColor = .cyan
+        return v
+    }()
+    
+    let theLabel: UILabel = {
+        let v = UILabel()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.backgroundColor = .clear
+        v.textAlignment = .center
+        v.font = UIFont.systemFont(ofSize: 14.0)
+        return v
+    }()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        commonInit()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        commonInit()
+    }
+    
+    func commonInit() -> Void {
+        self.backgroundColor = .clear
+        
+        // add the label to the content view
+        theContentView.addSubview(theLabel)
+        
+        // add the content view to self
+        addSubview(theContentView)
+        
+        NSLayoutConstraint.activate([
+            
+            // constrain the label to all 4 sides of the content view
+            theLabel.topAnchor.constraint(equalTo: theContentView.topAnchor, constant: 0.0),
+            theLabel.bottomAnchor.constraint(equalTo: theContentView.bottomAnchor, constant: 0.0),
+            theLabel.leadingAnchor.constraint(equalTo: theContentView.leadingAnchor, constant: 0.0),
+            theLabel.trailingAnchor.constraint(equalTo: theContentView.trailingAnchor, constant: 0.0),
+
+            // constrain the content view to all 4 sides of self with 5-pts "padding"
+            // so when two views are side-by-side, or over-under,
+            // the "content views" will have 10-pts spacing
+            theContentView.topAnchor.constraint(equalTo: topAnchor, constant: 5.0),
+            theContentView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5.0),
+            theContentView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 5.0),
+            theContentView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -5.0),
+
+        ])
+    }
+    
+}
+
 
 /*
 func xarrangeViews() -> Void {

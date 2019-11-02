@@ -92,7 +92,7 @@ class TestArrangeViewController: UIViewController {
 	var innerHeightConstraint: NSLayoutConstraint = NSLayoutConstraint()
 	
 	
-	var nViews:Int = 7
+	var nViews:Int = 2
 	
 	var bFirst: Bool = true
 	
